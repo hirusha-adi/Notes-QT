@@ -1,13 +1,13 @@
-# -*- coding: utf-8 -*-
+# # -*- coding: utf-8 -*-
 
-################################################################################
-# Form generated from reading UI file 'NotesnPYfYl.ui'
-##
-# Created by: Qt User Interface Compiler version 5.15.2
-##
-# WARNING! All changes made in this file will be lost when recompiling UI file!
-################################################################################
-import sys
+# ################################################################################
+# # Form generated from reading UI file 'NotesnPYfYl.ui'
+# ##
+# # Created by: Qt User Interface Compiler version 5.15.2
+# ##
+# # WARNING! All changes made in this file will be lost when recompiling UI file!
+# ################################################################################
+# import sys
 
 from PySide2.QtCore import *
 from PySide2.QtGui import *
@@ -200,7 +200,31 @@ class Ui_MainWindow(object):
     # retranslateUi
 
 
-myapp = QApplication(sys.argv)
-window = Ui_MainWindow()
-myapp.exec_()
-sys.exit()
+class MainWindow(QMainWindow, Ui_MainWindow):
+    def __init__(self):
+        Ui_MainWindow.__init__(self)
+        QMainWindow.__init__(self)
+
+        # Initialize UI
+        self.setupUi(self)
+
+    def tr(self, text):
+        return QObject.tr(self, text)
+
+        # import sys
+        # from PySide2 import QtCore, QtGui, QtWidgets
+        # from PySide2.QtUiTools import QUiLoader
+
+        # loader = QUiLoader()
+        # app = QtWidgets.QApplication(sys.argv)
+        # window = loader.load("Notes.ui", None)
+        # window.show()
+        # app.exec_()
+
+
+if __name__ == "__main__":
+    import sys
+    app = QApplication(sys.argv)
+    main_window = MainWindow()
+    main_window.show()
+    sys.exit(app.exec_())
