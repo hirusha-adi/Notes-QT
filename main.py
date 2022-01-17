@@ -25,7 +25,7 @@ class Window(QMainWindow):
 
         # Needed for the functions to function
         self.fileName = None
-        self.wordWrapMode = False
+        self.wordWrapMode = True
 
         # Code
         self.setWindowTitle(self.TITLE)
@@ -34,6 +34,7 @@ class Window(QMainWindow):
         self.textEdit = QTextEdit(self)
         self.textEdit.setFont(QFont('Sanserif', 13))
         self.setCentralWidget(self.textEdit)
+        self._setWordWrapFalse()
 
         self.setIcon()
 
