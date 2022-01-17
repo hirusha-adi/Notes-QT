@@ -15,7 +15,7 @@ class Window(QMainWindow):
 
         # main stuff
         self.NAME = "KQ-Pad"
-        self.VERSION = "0.1"
+        self.VERSION = "v0.1"
         self.TITLE = self.NAME + " | " + self.VERSION
         self.HELP_LINK = r"https://github.com/hirusha-adi/Notes-QT/blob/main/HELP.md"
 
