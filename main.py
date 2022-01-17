@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import sys
 import webbrowser
 from datetime import datetime
@@ -36,7 +39,6 @@ class Window(QMainWindow):
             self.textEdit.setUndoRedoEnabled(enable=True)
 
         self.setIcon()
-
         self.create_menu()
         self.show()
 
@@ -413,7 +415,7 @@ class Window(QMainWindow):
     def sendFeedbackAction_Clicked(self):
         QMessageBox.about(self,
                           "Send Feedback",
-                          "Email: zesta5j7k@gmail.com")
+                          "Email: zesta5j7k@gmail.com\nDiscord: ZeaCeR#5641")
 
     def aboutAction_Clicked(self):
         QMessageBox.about(self,
