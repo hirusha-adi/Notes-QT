@@ -1,13 +1,3 @@
-# import sys
-# from PySide2 import QtCore, QtGui, QtWidgets
-# from PySide2.QtUiTools import QUiLoader
-
-# loader = QUiLoader()
-# app = QtWidgets.QApplication(sys.argv)
-# window = loader.load("Notes.ui", None)
-# window.show()
-# app.exec_()
-
 import sys
 from datetime import datetime
 
