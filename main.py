@@ -6,6 +6,7 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtPrintSupport import *
 from PySide2.QtWidgets import *
+import webbrowser
 
 
 class Window(QMainWindow):
@@ -16,6 +17,7 @@ class Window(QMainWindow):
         self.NAME = "KQ-Pad"
         self.VERSION = "0.1"
         self.TITLE = self.NAME + " | " + self.VERSION
+        self.HELP_LINK = r"https://github.com/hirusha-adi/Notes-QT/blob/main/HELP.md"
 
         # Needed for the functions to function
         self.fileName = None
@@ -137,6 +139,7 @@ class Window(QMainWindow):
         # Main Menu: Format
         # --------------------------------------------------------
         wordWrapAction = QAction("Word Wrap", self)
+        wordWrapAction.setShortcut('Ctrl+.')
         wordWrapAction.triggered.connect(self.wordWrapAction_Clicked)
 
         fontAction = QAction("Font...", self)
@@ -146,9 +149,11 @@ class Window(QMainWindow):
         # Main Menu: View
         # --------------------------------------------------------
         zoomInAction = QAction("Zoom In", self)
+        zoomInAction.setShortcut('Ctrl+=')
         zoomInAction.triggered.connect(self.zoomInAction_Clicked)
 
         zoomOutAction = QAction("Zoom Out", self)
+        zoomOutAction.setShortcut('Ctrl+-')
         zoomOutAction.triggered.connect(self.zoomOutAction_Clicked)
 
         restoreDefaultZoomAction = QAction("Restore Default Zoom", self)
@@ -160,11 +165,12 @@ class Window(QMainWindow):
         # --------------------------------------------------------
         viewHelpAction = QAction("View Help", self)
         viewHelpAction.setEnabled(False)
+        viewHelpAction.triggered.connect(self.zoomOutAction_Clicked)
 
         sendFeedbackAction = QAction("Send Feedback", self)
         sendFeedbackAction.setEnabled(False)
 
-        aboutAction = QAction("About Notepad", self)
+        aboutAction = QAction("About " + self.NAME, self)
         aboutAction.setEnabled(False)
 
         # FINALLY, Adding everything
@@ -391,6 +397,15 @@ class Window(QMainWindow):
 
     def restoreDefaultZoomAction_Clicked(self):
         self.textEdit.zoomIn(self.currentZoom)
+
+    def viewHelpAction_Clicked(self):
+        webbrowser.open(self.HELP_LINK)
+
+    def sendFeedbackAction_Clicked(self):
+        pass
+
+    def aboutAction_Clicked(self):
+        pass
 
     def exit_app(self):
         self.close()
