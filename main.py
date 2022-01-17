@@ -1,4 +1,5 @@
 import sys
+import webbrowser
 from datetime import datetime
 
 import clipboard  # pip install clipboard
@@ -6,7 +7,6 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtPrintSupport import *
 from PySide2.QtWidgets import *
-import webbrowser
 
 
 class Window(QMainWindow):
