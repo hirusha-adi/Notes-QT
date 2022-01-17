@@ -194,6 +194,13 @@ class Window(QMainWindow):
 
     def openAction_Clicked(self):
         # https://stackoverflow.com/questions/60977801/file-browser-with-pyside2-get-the-path-of-the-file-and-then-kill-the-gui
+
+        if self.fileName:
+            with open(file=self.fileName, mode="rt", encoding="utf-8") as fileOpen:
+                fileOpenContent = fileOpen.read()
+            if self._getTextBoxContent() != fileOpenContent:
+                self._newFileCheckSavedOrNot()
+
         self.fileName = self._getFilenameToOpen()
         if self.fileName:
             with open(file=self.fileName, mode="rt", encoding="utf-8") as fileOpen:
@@ -250,31 +257,33 @@ class Window(QMainWindow):
         if ret == qm.Yes:
             self.saveAction_Clicked()
         else:
-            self.newFileAction_Clicked()
+            # self.newFileAction_Clicked()
+            self._newFileActionSupport()
 
     def _newFileCheckSavedOrNot(self):
         if self.fileName:
             with open(file=self.fileName, mode="rt", encoding="utf-8") as fileOpen:
                 fileOpenContent = fileOpen.read()
-            if self._getTextBoxContent() == fileOpenContent:
-                pass
-            else:
+            if self._getTextBoxContent() != fileOpenContent:
                 self._saveOrExitwithoutSaving_checkbox()
         else:
             self._saveOrExitwithoutSaving_checkbox()
+
+    def _newFileActionSupport(self):
+        try:
+            self.saveAsAction_Clicked()
+            if self.fileName:
+                with open(file=self.fileName, mode="rt", encoding="utf-8") as fileOpen:
+                    fileOpenContent = fileOpen.read()
+                    self.textEdit.setPlainText(fileOpenContent)
+        except Exception as e:
+            print("Something is really wrong lol:", e)
 
     def newFileAction_Clicked(self):
         if self._getTextBoxContent():
             self._newFileCheckSavedOrNot()
         else:
-            try:
-                self.saveAsAction_Clicked()
-                if self.fileName:
-                    with open(file=self.fileName, mode="rt", encoding="utf-8") as fileOpen:
-                        fileOpenContent = fileOpen.read()
-                        self.textEdit.setPlainText(fileOpenContent)
-            except Exception as e:
-                print("Something is really wrong lol:", e)
+            self._newFileActionSupport()
 
     def exit_app(self):
         self.close()
