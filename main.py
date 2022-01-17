@@ -36,6 +36,8 @@ class Window(QMainWindow):
         self.textEdit.setFont(QFont('Sanserif', 13))
         self.setCentralWidget(self.textEdit)
         self._setWordWrapFalse()
+        if not(self.textEdit.isUndoRedoEnabled()):
+            self.textEdit.setUndoRedoEnabled(enable=True)
 
         self.setIcon()
 
@@ -87,6 +89,11 @@ class Window(QMainWindow):
         # --------------------------------------------------------
         undoAction = QAction("Undo", self)
         undoAction.setShortcut('Ctrl+Z')
+        undoAction.triggered.connect(self.undoAction_Clicked)
+
+        redoAction = QAction("Redo", self)
+        redoAction.setShortcut('Ctrl+Y')
+        redoAction.triggered.connect(self.redoAction_Clicked)
 
         cutAction = QAction("Cut", self)
         cutAction.setShortcut('Ctrl+X')
@@ -152,6 +159,7 @@ class Window(QMainWindow):
 
         # Edit Menu
         editMenu.addAction(undoAction)  # undo
+        editMenu.addAction(redoAction)  # redo
         editMenu.addSeparator()  # seperator
         editMenu.addAction(cutAction)  # cut
         editMenu.addAction(copyction)  # copy
@@ -303,6 +311,13 @@ class Window(QMainWindow):
         dialog = QPrintDialog(printer, self)
         if dialog.exec_() == QPrintDialog.Accepted:
             self.textEdit.print_(printer)
+
+    def undoAction_Clicked(self):
+        # https://doc.qt.io/archives/qtforpython-5.12/PySide2/QtWidgets/QTextEdit.html#PySide2.QtWidgets.PySide2.QtWidgets.QTextEdit.setUndoRedoEnabled
+        self.textEdit.undo()
+
+    def redoAction_Clicked(self):
+        self.textEdit.redo()
 
     def exit_app(self):
         self.close()
