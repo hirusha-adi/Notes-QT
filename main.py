@@ -41,7 +41,7 @@ class Window(QMainWindow):
         self.show()
 
     def setIcon(self):
-        appIcon = QIcon("icon.png")
+        appIcon = QIcon("notes.png")
         self.setWindowIcon(appIcon)
 
     def create_menu(self):
@@ -164,14 +164,13 @@ class Window(QMainWindow):
         # Main Menu: Help
         # --------------------------------------------------------
         viewHelpAction = QAction("View Help", self)
-        viewHelpAction.setEnabled(False)
         viewHelpAction.triggered.connect(self.zoomOutAction_Clicked)
 
         sendFeedbackAction = QAction("Send Feedback", self)
-        sendFeedbackAction.setEnabled(False)
+        sendFeedbackAction.triggered.connect(self.sendFeedbackAction_Clicked)
 
         aboutAction = QAction("About " + self.NAME, self)
-        aboutAction.setEnabled(False)
+        aboutAction.triggered.connect(self.aboutAction_Clicked)
 
         # FINALLY, Adding everything
         # --------------------------------------------------------
@@ -402,10 +401,14 @@ class Window(QMainWindow):
         webbrowser.open(self.HELP_LINK)
 
     def sendFeedbackAction_Clicked(self):
-        pass
+        QMessageBox.about(self,
+                          "Send Feedback",
+                          "Email: zesta5j7k@gmail.com")
 
     def aboutAction_Clicked(self):
-        pass
+        QMessageBox.about(self,
+                          f"About {self.NAME}",
+                          "Made by github user @hirusha-adi using the MIT License")
 
     def exit_app(self):
         self.close()
