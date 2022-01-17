@@ -12,6 +12,7 @@ import sys
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
+from PySide2.QtPrintSupport import *
 
 
 class Window(QMainWindow):
@@ -68,12 +69,15 @@ class Window(QMainWindow):
         saveAction.triggered.connect(self.saveAction_Clicked)
 
         saveAsAction = QAction("Save As", self)
+        saveAsAction.setShortcut('Ctrl+Shift+S')
         saveAsAction.triggered.connect(self.saveAsAction_Clicked)
-
-        pageSetupAction = QAction("Page Setup", self)
 
         printAction = QAction('Print', self)
         printAction.setShortcut('Ctrl+P')
+        printAction.triggered.connect(self.printAction_Clicked)
+
+        printPreviewAction = QAction("Print Preview", self)
+        printPreviewAction.triggered.connect(self.printPreviewAction_Clicked)
 
         exitAction = QAction("Exit", self)
         exitAction.setShortcut('Ctrl+X')
@@ -141,8 +145,8 @@ class Window(QMainWindow):
         fileMenu.addAction(saveAction)  # save
         fileMenu.addAction(saveAsAction)  # save as
         fileMenu.addSeparator()  # seperator
-        fileMenu.addAction(pageSetupAction)  # page setup
         fileMenu.addAction(printAction)  # print
+        fileMenu.addAction(printPreviewAction)  # print preview
         fileMenu.addSeparator()  # seperator
         fileMenu.addAction(exitAction)  # exit
 
@@ -284,6 +288,21 @@ class Window(QMainWindow):
             self._newFileCheckSavedOrNot()
         else:
             self._newFileActionSupport()
+
+    def _printPreviewActionSupport(self, printer):
+        self.textEdit.print_(printer)
+
+    def printPreviewAction_Clicked(self):
+        printer = QPrinter(QPrinter.HighResolution)
+        previewDialog = QPrintPreviewDialog(printer, self)
+        previewDialog.paintRequested.connect(self._printPreviewActionSupport)
+        previewDialog.exec_()
+
+    def printAction_Clicked(self):
+        printer = QPrinter(QPrinter.HighResolution)
+        dialog = QPrintDialog(printer, self)
+        if dialog.exec_() == QPrintDialog.Accepted:
+            self.textEdit.print_(printer)
 
     def exit_app(self):
         self.close()
