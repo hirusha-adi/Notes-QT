@@ -26,7 +26,7 @@ class Window(QMainWindow):
 
         # Code
         self.setWindowTitle(self.TITLE)
-        self.setGeometry(300, 200, 800, 600)
+        self.setGeometry(300, 200, 650, 500)
 
         self.textEdit = QTextEdit(self)
         self.textEdit.setFont(QFont('Sanserif', 13))
