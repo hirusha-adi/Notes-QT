@@ -143,8 +143,7 @@ class Window(QMainWindow):
         wordWrapAction.triggered.connect(self.wordWrapAction_Clicked)
 
         fontAction = QAction("Font...", self)
-        fontAction.triggered.connect(self.selectAllAction_Clicked)
-        fontAction.setEnabled(False)
+        fontAction.triggered.connect(self.fontAction_Clicked)
 
         # Main Menu: View
         # --------------------------------------------------------
@@ -384,7 +383,18 @@ class Window(QMainWindow):
             str(timeNow.strftime("%H:%M - %d/%m/%Y")))
 
     def fontAction_Clicked(self):
-        pass
+        # https://doc.qt.io/qt-5/qfontdialog.html
+        # https://doc.qt.io/qtforpython-5/PySide2/QtWidgets/QFontDialog.html
+        # https://doc.qt.io/qt-5/qfontcombobox.html
+        # https://www.tutorialspoint.com/pyqt/pyqt_qfontdialog_widget.htm
+        font, ok = QFontDialog.getFont()
+
+        # The original docs say that `font` is PySide2.QtGui.QFont and `ok` is bool
+        # But when i tried it, the results were inverted
+        try:
+            self.textEdit.setFont(font)
+        except TypeError:
+            self.textEdit.setFont(ok)
 
     def zoomInAction_Clicked(self):
         self.textEdit.zoomIn(1)
