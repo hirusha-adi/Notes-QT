@@ -30,8 +30,9 @@ python3 -m PyInstaller notes.py --onefile --noconfirm
 
 cd ./dist
 sudo cp notes /usr/bin/notes
+sudo cp notes.png /usr/bin/notes.png
 cd ~
-rm -rf "~/Desktop/temp"
+rm -rf "~/Desktop/temp/"
 ```
 
 - Run from source (Fast + Lightweight)
@@ -42,8 +43,9 @@ mkdir temp && cd temp
 git clone https://github.com/hirusha-adi/Notes-QT.git
 cd Notes-QT
 sudo mv notes.py /usr/bin/notes
+sudo cp notes.png /usr/bin/notes.png
 cd ~
-rm -rf "~/Desktop/temp"
+rm -rf "~/Desktop/temp/"
 ```
 
 ## Arch Linux
@@ -62,6 +64,16 @@ cd "~/Desktop/"
 mkdir temp && cd temp
 git clone https://github.com/hirusha-adi/Notes-QT.git
 cd Notes-QT
+
+pyinstaller notes.py --onefile --noconfirm
+# or
+python3 -m PyInstaller notes.py --onefile --noconfirm
+
+cd ./dist
+sudo cp notes /usr/bin/notes
+sudo cp notes.png /usr/bin/notes.png
+cd ~
+rm -rf "~/Desktop/temp/"
 ```
 
 - Run from source (Fast + Lightweight)
@@ -72,8 +84,9 @@ mkdir temp && cd temp
 git clone https://github.com/hirusha-adi/Notes-QT.git
 cd Notes-QT
 sudo mv notes.py /usr/bin/notes
+sudo cp notes.png /usr/bin/notes.png
 cd ~
-rm -rf "~/Desktop/temp"
+rm -rf "~/Desktop/temp/"
 ```
 
 ## Microsoft Windows
