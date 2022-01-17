@@ -64,6 +64,7 @@ class Window(QMainWindow):
 
         saveAction = QAction("Save", self)
         saveAction.setShortcut('Ctrl+S')
+        saveAction.triggered.connect(self.saveAction_Clicked)
 
         saveAsAction = QAction("Save As", self)
         saveAsAction.triggered.connect(self.saveAsAction_Clicked)
@@ -214,6 +215,7 @@ class Window(QMainWindow):
             self.wordWrapMode = False
 
     def _getSaveAsFileName(self):
+        # https://doc.qt.io/qtforpython-5/PySide2/QtWidgets/QFileDialog.html#PySide2.QtWidgets.PySide2.QtWidgets.QFileDialog.getSaveFileName
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         fileName, _ = QFileDialog.getSaveFileName(
@@ -227,11 +229,18 @@ class Window(QMainWindow):
         return str(self.textEdit.toPlainText())
 
     def saveAsAction_Clicked(self):
-        # https://doc.qt.io/qtforpython-5/PySide2/QtWidgets/QFileDialog.html#PySide2.QtWidgets.PySide2.QtWidgets.QFileDialog.getSaveFileName
-        filenameSave = self._getSaveAsFileName()
-        self.fileName = filenameSave
-        with open(file=self.fileName, mode="wt", encoding="utf-8") as saveFile:
-            saveFile.write(self._getTextBoxContent())
+        fileNameSave = self._getSaveAsFileName()
+        if fileNameSave:
+            self.fileName = fileNameSave
+            with open(file=self.fileName, mode="wt", encoding="utf-8") as saveFile:
+                saveFile.write(self._getTextBoxContent())
+
+    def saveAction_Clicked(self):
+        if self.fileName:
+            with open(file=self.fileName, mode="wt", encoding="utf-8") as saveFile:
+                saveFile.write(self._getTextBoxContent())
+        else:
+            self.saveAsAction_Clicked()
 
     def exit_app(self):
         self.close()
