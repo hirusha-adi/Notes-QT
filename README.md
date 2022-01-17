@@ -119,3 +119,30 @@ pyinstaller --noconfirm --onefile notes.py
   1. Discord user `OLIVER`
   2. Discord user `OkSheBroken`
   3. Discord user `key`
+
+# Screenshots (on Arch Linux with KDE Breeze Dark)
+
+![image](https://user-images.githubusercontent.com/36286877/149811059-71a4d02d-cee7-4145-ae10-a1be8c0d519b.png)
+
+<br>
+
+- Change Font
+<br>
+
+![image](https://user-images.githubusercontent.com/36286877/149810619-1b4782b9-9c36-437a-a74d-58958f9f80f3.png)
+
+- Print
+<br>
+
+![image](https://user-images.githubusercontent.com/36286877/149810774-8e3759ff-8933-49e7-8e69-3ec3e157c699.png)
+
+- Print Preview
+<br>
+
+![image](https://user-images.githubusercontent.com/36286877/149810906-439d0591-c7d3-40e3-99ed-cfded510d54a.png)
+
+- Save As
+<br>
+
+![image](https://user-images.githubusercontent.com/36286877/149810966-29d2522d-8713-4b61-8638-e67d80389be8.png)
+
