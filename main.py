@@ -57,6 +57,7 @@ class Window(QMainWindow):
         # --------------------------------------------------------
         newFileAction = QAction("New", self)
         newFileAction.setShortcut('Ctrl+N')
+        newFileAction.triggered.connect(self.newFileAction_Clicked)
 
         openAction = QAction("Open", self)
         openAction.setShortcut('Ctrl+O')
@@ -241,6 +242,39 @@ class Window(QMainWindow):
                 saveFile.write(self._getTextBoxContent())
         else:
             self.saveAsAction_Clicked()
+
+    def _saveOrExitwithoutSaving_checkbox(self):
+        qm = QMessageBox
+        ret = qm.question(
+            self, '', "Do you want to save changes?", qm.Yes | qm.No)
+        if ret == qm.Yes:
+            self.saveAction_Clicked()
+        else:
+            self.newFileAction_Clicked()
+
+    def _newFileCheckSavedOrNot(self):
+        if self.fileName:
+            with open(file=self.fileName, mode="rt", encoding="utf-8") as fileOpen:
+                fileOpenContent = fileOpen.read()
+            if self._getTextBoxContent() == fileOpenContent:
+                pass
+            else:
+                self._saveOrExitwithoutSaving_checkbox()
+        else:
+            self._saveOrExitwithoutSaving_checkbox()
+
+    def newFileAction_Clicked(self):
+        if self._getTextBoxContent():
+            self._newFileCheckSavedOrNot()
+        else:
+            try:
+                self.saveAsAction_Clicked()
+                if self.fileName:
+                    with open(file=self.fileName, mode="rt", encoding="utf-8") as fileOpen:
+                        fileOpenContent = fileOpen.read()
+                        self.textEdit.setPlainText(fileOpenContent)
+            except Exception as e:
+                print("Something is really wrong lol:", e)
 
     def exit_app(self):
         self.close()
