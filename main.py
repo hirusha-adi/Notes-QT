@@ -9,10 +9,13 @@
 # app.exec_()
 
 import sys
+from datetime import datetime
+
+import clipboard  # pip install clipboard
 from PySide2.QtCore import *
 from PySide2.QtGui import *
-from PySide2.QtWidgets import *
 from PySide2.QtPrintSupport import *
+from PySide2.QtWidgets import *
 
 
 class Window(QMainWindow):
@@ -27,6 +30,7 @@ class Window(QMainWindow):
         # Needed for the functions to function
         self.fileName = None
         self.wordWrapMode = True
+        self.currentZoom = 1
 
         # Code
         self.setWindowTitle(self.TITLE)
@@ -97,52 +101,81 @@ class Window(QMainWindow):
 
         cutAction = QAction("Cut", self)
         cutAction.setShortcut('Ctrl+X')
+        cutAction.triggered.connect(self.cutAction_Clicked)
 
-        copyction = QAction("Copy", self)
-        copyction.setShortcut('Ctrl+C')
+        copyAction = QAction("Copy", self)
+        copyAction.setShortcut('Ctrl+C')
+        copyAction.triggered.connect(self.copyAction_Clicked)
 
         pasteAction = QAction("Paste", self)
         pasteAction.setShortcut('Ctrl+V')
+        pasteAction.triggered.connect(self.pasteAction_Clicked)
 
         deleteAction = QAction("Delete", self)
         deleteAction.setShortcut('Del')
+        deleteAction.triggered.connect(self.deleteAction_Clicked)
+        deleteAction.setEnabled(False)
 
         findAction = QAction("Find", self)
         findAction.setShortcut('Ctrl+F')
+        findAction.triggered.connect(self.findAction_Clicked)
+        findAction.setEnabled(False)
 
         findNextAction = QAction("Find Next", self)
         findNextAction.setShortcut('F3')
+        findNextAction.triggered.connect(self.findNextAction_Clicked)
+        findNextAction.setEnabled(False)
 
         replaceAction = QAction("Replace", self)
         replaceAction.setShortcut('Ctrl+H')
+        replaceAction.triggered.connect(self.replaceAction_Clicked)
+        replaceAction.setEnabled(False)
 
         goToAction = QAction("Go To", self)
         goToAction.setShortcut('Ctrl+G')
+        goToAction.triggered.connect(self.goToAction_Clicked)
+        goToAction.setEnabled(False)
 
         selectAllAction = QAction("Select All", self)
         selectAllAction.setShortcut('Ctrl+A')
+        selectAllAction.triggered.connect(self.selectAllAction_Clicked)
 
         timeDateAction = QAction("Time/Date", self)
         timeDateAction.setShortcut('F5')
+        timeDateAction.triggered.connect(self.timeDateAction_Clicked)
 
         # Main Menu: Format
         # --------------------------------------------------------
         wordWrapAction = QAction("Word Wrap", self)
         wordWrapAction.triggered.connect(self.wordWrapAction_Clicked)
+
         fontAction = QAction("Font...", self)
+        fontAction.triggered.connect(self.selectAllAction_Clicked)
+        fontAction.setEnabled(False)
 
         # Main Menu: View
         # --------------------------------------------------------
         zoomInAction = QAction("Zoom In", self)
+        zoomInAction.triggered.connect(self.zoomInAction_Clicked)
+
         zoomOutAction = QAction("Zoom Out", self)
+        zoomOutAction.triggered.connect(self.zoomOutAction_Clicked)
+
         restoreDefaultZoomAction = QAction("Restore Default Zoom", self)
-        statusBarAction = QAction("Status Bar", self)
+        restoreDefaultZoomAction.triggered.connect(
+            self.restoreDefaultZoomAction_Clicked)
+        restoreDefaultZoomAction.setEnabled(False)
 
         # Main Menu: Help
         # --------------------------------------------------------
         viewHelpAction = QAction("View Help", self)
+        viewHelpAction.setEnabled(False)
+
         sendFeedbackAction = QAction("Send Feedback", self)
+        sendFeedbackAction.setEnabled(False)
+
         aboutAction = QAction("About Notepad", self)
+        aboutAction.setEnabled(False)
 
         # FINALLY, Adding everything
         # --------------------------------------------------------
@@ -162,9 +195,9 @@ class Window(QMainWindow):
         editMenu.addAction(redoAction)  # redo
         editMenu.addSeparator()  # seperator
         editMenu.addAction(cutAction)  # cut
-        editMenu.addAction(copyction)  # copy
+        editMenu.addAction(copyAction)  # copy
         editMenu.addAction(pasteAction)  # paste
-        editMenu.addAction(deleteAction)  # delete
+        # editMenu.addAction(deleteAction)  # delete
         editMenu.addSeparator()  # seperator
         editMenu.addAction(findAction)  # find
         editMenu.addAction(findNextAction)  # find next
@@ -184,7 +217,6 @@ class Window(QMainWindow):
         # restore to default zoom level
         viewMenu.addAction(restoreDefaultZoomAction)
         viewMenu.addSeparator()  # seperator
-        viewMenu.addAction(statusBarAction)  # status bar
 
         # Help Menu
         helpMenu.addAction(viewHelpAction)  # view help
@@ -319,11 +351,63 @@ class Window(QMainWindow):
     def redoAction_Clicked(self):
         self.textEdit.redo()
 
+    def cutAction_Clicked(self):
+        self.textEdit.cut()
+
+    def copyAction_Clicked(self):
+        self.textEdit.copy()
+
+    def pasteAction_Clicked(self):
+        self.textEdit.paste()
+
+    def deleteAction_Clicked(self):
+        # oldCopied = clipboard.paste()
+        # self.cutAction_Clicked()
+        # clipboard.copy(str(oldCopied))
+        pass
+
+    def findAction_Clicked(self):
+        # flag = QTextDocument.FindBackward
+        # self.textEdit.find('A', flag)
+        pass
+
+    def findNextAction_Clicked(self):
+        pass
+
+    def replaceAction_Clicked(self):
+        pass
+
+    def goToAction_Clicked(self):
+        pass
+
+    def selectAllAction_Clicked(self):
+        self.textEdit.selectAll()
+
+    def timeDateAction_Clicked(self):
+        timeNow = datetime.now()
+        self.textEdit.insertPlainText(
+            str(timeNow.strftime("%H:%M - %d/%m/%Y")))
+
+    def fontAction_Clicked(self):
+        pass
+
+    def zoomInAction_Clicked(self):
+        self.textEdit.zoomIn(1)
+        self.currentZoom += 1
+
+    def zoomOutAction_Clicked(self):
+        self.textEdit.zoomOut(1)
+        self.currentZoom -= 1
+
+    def restoreDefaultZoomAction_Clicked(self):
+        self.textEdit.zoomIn(self.currentZoom)
+
     def exit_app(self):
         self.close()
 
 
-myapp = QApplication(sys.argv)
-window = Window()
-myapp.exec_()
-sys.exit()
+if __name__ == "__main__":
+    myapp = QApplication(sys.argv)
+    window = Window()
+    myapp.exec_()
+    sys.exit()
