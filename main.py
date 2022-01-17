@@ -57,7 +57,6 @@ class Window(QMainWindow):
         newFileAction = QAction("New", self)
         newFileAction.setShortcut('Ctrl+N')
 
-        # https://stackoverflow.com/questions/60977801/file-browser-with-pyside2-get-the-path-of-the-file-and-then-kill-the-gui
         openAction = QAction("Open", self)
         openAction.setShortcut('Ctrl+O')
         openAction.triggered.connect(self.openAction_Clicked)
@@ -191,6 +190,7 @@ class Window(QMainWindow):
         return fileName
 
     def openAction_Clicked(self):
+        # https://stackoverflow.com/questions/60977801/file-browser-with-pyside2-get-the-path-of-the-file-and-then-kill-the-gui
         self.fileName = self._getFilenameToOpen()
         if self.fileName:
             with open(file=self.fileName, mode="rt", encoding="utf-8") as fileOpen:
@@ -201,15 +201,15 @@ class Window(QMainWindow):
         self.textEdit.setLineWrapMode(QTextEdit.NoWrap)
 
     def _setWordWrapTrue(self):
-        self.textEdit.setLineWrapMode(QTextEdit.FixedPixelWidth)
+        self.textEdit.setLineWrapMode(QTextEdit.WidgetWidth)
 
     def wordWrapAction_Clicked(self):
         if self.wordWrapMode == False:
-            self._setWordWrapTrue()
+            self._setWordWrapFalse()
             self.wordWrapMode = True
 
         elif self.wordWrapMode == True:
-            self._setWordWrapFalse()
+            self._setWordWrapTrue()
             self.wordWrapMode = False
 
     def exit_app(self):
