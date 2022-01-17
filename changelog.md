@@ -2,6 +2,7 @@
 
 2. 2022/01/17
    - word wrap (on and off) - defaults to no wrap
+   - added save and save as, works as intended
 1. 2022/01/16
    - Created GUI
    - Added all menu's and keyboard shortcuts
