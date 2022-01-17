@@ -18,7 +18,17 @@ class Window(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("KQ-Pad")
+        # main stuff
+        self.NAME = "KQ-Pad"
+        self.VERSION = "0.1"
+        self.TITLE = self.NAME + " | " + self.VERSION
+
+        # Needed for the functions to function
+        self.fileName = None
+        self.wordWrapMode = False
+
+        # Code
+        self.setWindowTitle(self.TITLE)
         self.setGeometry(300, 200, 800, 600)
 
         self.textEdit = QTextEdit(self)
@@ -47,9 +57,12 @@ class Window(QMainWindow):
         newFileAction = QAction("New", self)
         newFileAction.setShortcut('Ctrl+N')
 
+        # https://stackoverflow.com/questions/60977801/file-browser-with-pyside2-get-the-path-of-the-file-and-then-kill-the-gui
         openAction = QAction("Open", self)
         openAction.setShortcut('Ctrl+O')
+        openAction.triggered.connect(self.openAction_Clicked)
 
+        # https://doc.qt.io/qtforpython-5/PySide2/QtWidgets/QFileDialog.html#PySide2.QtWidgets.PySide2.QtWidgets.QFileDialog.getSaveFileName
         saveAction = QAction("Save", self)
         saveAction.setShortcut('Ctrl+S')
 
@@ -102,7 +115,7 @@ class Window(QMainWindow):
         # Main Menu: Format
         # --------------------------------------------------------
         wordWrapAction = QAction("Word Wrap", self)
-
+        wordWrapAction.triggered.connect(self.wordWrapAction_Clicked)
         fontAction = QAction("Font...", self)
 
         # Main Menu: View
@@ -165,13 +178,45 @@ class Window(QMainWindow):
         helpMenu.addSeparator()  # seperator
         helpMenu.addAction(aboutAction)  # about
 
+    def _getFilenameToOpen(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        fileName, _ = QFileDialog.getOpenFileName(
+            None,
+            "Open File | " + self.TITLE,
+            "",
+            "All Files (*);;Text Files (*.txt)",
+            options=options,
+        )
+        return fileName
+
+    def openAction_Clicked(self):
+        self.fileName = self._getFilenameToOpen()
+        if self.fileName:
+            with open(file=self.fileName, mode="rt", encoding="utf-8") as fileOpen:
+                fileOpenContent = fileOpen.read()
+            self.textEdit.setPlainText(fileOpenContent)
+
+    def _setWordWrapFalse(self):
+        self.textEdit.setLineWrapMode(QTextEdit.NoWrap)
+
+    def _setWordWrapTrue(self):
+        self.textEdit.setLineWrapMode(QTextEdit.FixedPixelWidth)
+
+    def wordWrapAction_Clicked(self):
+        if self.wordWrapMode == False:
+            self._setWordWrapTrue()
+            self.wordWrapMode = True
+
+        elif self.wordWrapMode == True:
+            self._setWordWrapFalse()
+            self.wordWrapMode = False
+
     def exit_app(self):
         self.close()
 
 
 myapp = QApplication(sys.argv)
 window = Window()
-
-
 myapp.exec_()
 sys.exit()
